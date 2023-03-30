@@ -33,7 +33,7 @@ if ! .is-plugin-installed ${plugin_id}; then
 
 	.zu-fn-sources-${source_type}-clone ${plugin_id} 2>> ~/.zshrc.log
 	revolver stop
-	echo "${fg_bold[cyan]}✔ ${fg_bold[blue]}$1${reset_color} installed "
+	echo "${fg_bold[cyan]}✔ ${fg_bold[blue]}${plugin_id}${reset_color} installed "
 fi
 
 # add plugin dir to fpath to detect completions
