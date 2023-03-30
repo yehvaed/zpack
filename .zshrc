@@ -39,4 +39,5 @@
 	export YSU_MESSAGE_POSITION="after"
 }
 
+POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 source init.zsh

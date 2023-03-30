@@ -1,11 +1,30 @@
 #!/usr/bin/env zsh
-# detec of what type of mirrorer I should use
-local source_type=github
+
+local source_type
 local plugin_id=${1}
 
+# detec of what type of mirrorer I should use
 case $1 in
-	(@*/*) source_type=${${1/@/}:h};;
+	(@*/*) source_type=${${1/@/}:h} ;;
+	(*/*) source_type=github ;;
 esac
+
+plugin_id=${1}
+shift
+
+
+local -a explicit_file_to_load=()
+while [[ -n "$@" ]]; do
+    case $1 in
+		(wait*)
+			wait_condition=${1/wait/}
+		;;
+        (pick*)
+            explicit_file_to_load+=(${1/pick/})
+        ;;
+    esac
+    shift
+done
 
 # clone repos if they are not exist
 if ! .is-plugin-installed ${plugin_id}; then
@@ -17,27 +36,40 @@ if ! .is-plugin-installed ${plugin_id}; then
 	echo "${fg_bold[cyan]}✔ ${fg_bold[blue]}$1${reset_color} installed "
 fi
 
-while [[ -n "$@" ]]; do
-    case $1 in
-        (pick*)
-            local fileTopick=${1/pick/}
-        ;;
-    esac
-    shift
-done
-
+# add plugin dir to fpath to detect completions
 local plugin_path=${ZUTILS[PLUGINS_DIR]}/${plugin_id/\//--}
 fpath+=(${plugin_path})
 
-local load_file
-if [[ -z "${fileTopick}" ]]; then
-	load_file=( ${plugin_path}/*.plugin.zsh(N) )
-else
-	load_file="${plugin_path}/${fileTopick}"
+if [[ "${wait_condition}" == "idle" ]]; then
+	eval ".zsh-defer.${1/\//--}.source() {
+		source $1;
+		zsh_loaded_plugins+=( "${plugin_id}" );
+	}"
 fi
 
-[[ -z "${load_file}" ]] && return 0
-source $load_file
+if [[ -n "${(@)explicit_file_to_load}" ]]; then
+	# if we picked up explicit files we need to add full path
+	explicit_file_to_load=( ${explicit_file_to_load/#/${plugin_path}\/} )
+fi
 
-fpath+=(${plugin_path})
-zsh_loaded_plugins+=( "${plugin_id}" )
+if [[ -z "${(@)explicit_file_to_load}" ]]; then
+	explicit_file_to_load+=( ${plugin_path}/*.plugin.zsh(N) )
+fi
+
+# load file
+if [[ -n "${(@)explicit_file_to_load}" ]]; then
+	for file in ${(@)explicit_file_to_load}; do
+		source ${file}
+	done
+fi
+
+if [[ "${wait_condition}" == "idle" ]]; then
+	eval ".zsh-defer.${1/\//--}.source() { \
+		source "${(@)explicit_file_to_load}"; \
+		zsh_loaded_plugins+=( "${plugin_id}" ); \
+	}"
+	zsh-defer .zsh-defer.${1/\//--}.source
+else
+	source ${(@)explicit_file_to_load}
+	zsh_loaded_plugins+=( "${plugin_id}" )
+fi
