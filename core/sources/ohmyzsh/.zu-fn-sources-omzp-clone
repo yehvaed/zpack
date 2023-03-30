@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+[[ ! -d "${ZUTILS[PLUGINS_DIR]}/ohmyzsh--ohmyzsh" ]] && .zu-fn-sources-github-clone "ohmyzsh/ohmyzsh"
+cp -r ${ZUTILS[PLUGINS_DIR]}/ohmyzsh--ohmyzsh/plugins/${1:t} "${ZUTILS[PLUGINS_DIR]}/${1/\//--}"

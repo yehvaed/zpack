@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+local plugin_home=${ZUTILS[PLUGINS_DIR]}/${1/\//--}
+
+{ ls ${plugin_home}/*.zsh; [[ -d "${plugin_home}/functions " ]] && find ${plugin_home}/functions -type f } | while read file; do
+    # revolver update "compile ${file/$1\//}..."
+    zcompile $file
+done

@@ -1,0 +1,43 @@
+#!/usr/bin/env zsh
+# detec of what type of mirrorer I should use
+local source_type=github
+local plugin_id=${1}
+
+case $1 in
+	(@*/*) source_type=${${1/@/}:h};;
+esac
+
+# clone repos if they are not exist
+if ! .is-plugin-installed ${plugin_id}; then
+	export ZU_EVENT_NEW_PLUGINS=true
+	revolver start "Adding $1 plugin..."
+
+	.zu-fn-sources-${source_type}-clone ${plugin_id} 2>> ~/.zshrc.log
+	revolver stop
+	echo "${fg_bold[cyan]}✔ ${fg_bold[blue]}$1${reset_color} installed "
+fi
+
+while [[ -n "$@" ]]; do
+    case $1 in
+        (pick*)
+            local fileTopick=${1/pick/}
+        ;;
+    esac
+    shift
+done
+
+local plugin_path=${ZUTILS[PLUGINS_DIR]}/${plugin_id/\//--}
+fpath+=(${plugin_path})
+
+local load_file
+if [[ -z "${fileTopick}" ]]; then
+	load_file=( ${plugin_path}/*.plugin.zsh(N) )
+else
+	load_file="${plugin_path}/${fileTopick}"
+fi
+
+[[ -z "${load_file}" ]] && return 0
+source $load_file
+
+fpath+=(${plugin_path})
+zsh_loaded_plugins+=( "${plugin_id}" )
