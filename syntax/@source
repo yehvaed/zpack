@@ -64,11 +64,11 @@ if [[ -n "${(@)explicit_file_to_load}" ]]; then
 fi
 
 if [[ "${wait_condition}" == "idle" ]]; then
-	eval ".zsh-defer.${1/\//--}.source() { \
+	eval ".zsh-defer.${plugin_id/\//--}.source() { \
 		source "${(@)explicit_file_to_load}"; \
 		zsh_loaded_plugins+=( "${plugin_id}" ); \
 	}"
-	zsh-defer .zsh-defer.${1/\//--}.source
+	zsh-defer .zsh-defer.${plugin_id/\//--}.source
 else
 	source ${(@)explicit_file_to_load}
 	zsh_loaded_plugins+=( "${plugin_id}" )
