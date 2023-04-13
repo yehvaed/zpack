@@ -10,6 +10,7 @@
 	has 'ansible' source "@omzp/ansible" wait'idle'
 	has 'nomad' source "@omzp/nomad" wait'idle'
 	has 'nomad' source "@omzp/docker" wait'idle'
+	has 'packer' source 'wakeful/zsh-packer' wait'idle'
 
 	has 'npm' source '@omzp/npm' wait'idle'
 	has 'yarn' source '@omzp/yarn' wait'idle'
