@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+local plugin_home=${ZUTILS[PLUGINS_DIR]}/${1/\//--}
+
+local files_to_compile=($(
+    {
+        grep -r -E '(mode: zsh)|(#!.+zsh)' -l ${plugin_home};
+        echo ${plugin_home}/*.zsh(N);
+    } \
+    | uniq
+))
+
+for to_compile in ${(@)files_to_compile}; do
+    zcompile ${to_compile}
+done

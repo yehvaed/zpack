@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+local plugin_home="${ZUTILS[PLUGINS_DIR]}/${1/\//--}"
+mkdir -p "${plugin_home}" && cp "${ZUTILS[PLUGINS_DIR]}/ohmyzsh--ohmyzsh/lib/${1:t}.zsh" "${plugin_home}/${1:t}.plugin.zsh"

@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+local plugin_home="${ZUTILS[PLUGINS_DIR]}/${1/\//--}"
+
+if [[ ! -d "${ZUTILS[PLUGINS_DIR]}/ohmyzsh--ohmyzsh" ]]; then 
+    .zu-fn-modif-source-github "ohmyzsh/ohmyzsh"
+fi
+
+cp -r ${ZUTILS[PLUGINS_DIR]}/ohmyzsh--ohmyzsh/plugins/${1:t} "${plugin_home}"

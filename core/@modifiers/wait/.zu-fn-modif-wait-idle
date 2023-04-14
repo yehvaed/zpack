@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+[[ ! "$@" == "idle" ]] && return 0;
+
+.zu-source-when-idle() {
+    for file in $@; do;
+        zsh-defer source ${file};
+    done;
+}
+
+eval ".zu-source() {
+    .zu-source-when-idle \$@; unset -f .zu-source; autoload -Uz .zu-source;
+}"

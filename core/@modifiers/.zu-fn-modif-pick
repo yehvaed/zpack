@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+local file_to_pick=$1
+
+.zu-source-plugin-with-file-to-pick() {
+    local plugin_home="${ZUTILS[PLUGINS_DIR]}/${1/\//--}";
+    .zu-source ${plugin_home}/$2
+}
+
+eval ".zu-source-plugin() {
+    .zu-source-plugin-with-file-to-pick \$1 ${file_to_pick}; unset -f .zu-source-plugin; autoload -Uz .zu-source-plugin;
+}"

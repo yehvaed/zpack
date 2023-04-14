@@ -11,7 +11,7 @@ typeset -gA ZUTILS
 
 path+=( "/usr/local/bin" )
 
-local autoload_dirs=( ${0:h}/core/**/*(/) ${0:h}/syntax )
+local autoload_dirs=( ${0:h}/core/**/*(/) ${0:h}/core  ${0:h}/syntax )
 fpath+=( ${(@)autoload_dirs} "${HOME}/.cache/completions" )
 
 for dir in ${(@)autoload_dirs}; do
