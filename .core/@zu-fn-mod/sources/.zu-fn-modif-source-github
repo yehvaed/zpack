@@ -1,2 +1,0 @@
-#!/usr/bin/env zsh
-git clone --depth 1 "https://github.com/${1}.git" ${ZUTILS[PLUGINS_DIR]}/${1/\//--}

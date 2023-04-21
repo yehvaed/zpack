@@ -1,5 +1,0 @@
-#!/usr/bin/env zsh
-
-for file in $@; do
-    source ${file}
-done
