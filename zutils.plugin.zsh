@@ -24,6 +24,7 @@ autoload compinit && compinit -u
 autoload -Uz add-zle-hook-widget
 
 functions[.init]=${functions[.init]//source/@zu-source}
+functions[.init]=${functions[.init]//has/@zu-has}
 .init && unset -f .init
 
 autoload compinit && compinit -u

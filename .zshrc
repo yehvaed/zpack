@@ -3,8 +3,8 @@ zmodload zsh/zprof
 
 .init() {
 	# ==> completion helpers
-	source 'Aloxaf/fzf-tab' when'idle'
-	source 'joshskidmore/zsh-fzf-history-search' when'idle'
+	source 'Aloxaf/fzf-tab' when'idle' has'fzf'
+	source 'joshskidmore/zsh-fzf-history-search' when'idle' has'fzf'
 
 	# # ==> zle helpers
 	source 'hlissner/zsh-autopair' when'idle'
@@ -13,7 +13,7 @@ zmodload zsh/zprof
 	source '@omzp/fancy-ctrl-z' when'idle'
 
 	# # ==> productivity
-	source '@omzp/fasd' when'idle'
+	source '@omzp/fasd' when'idle' has'fasd'
 	source 'zpm-zsh/undollar' when'idle'
 
 	# # ==> habits
@@ -21,16 +21,16 @@ zmodload zsh/zprof
 	source 'ahmubashshir/zinsults' when'idle'
 
 	# ==> tools dev
-	source "@omzp/git" when'[[ -n $ZLAST_COMMANDS[(r)g*] ]]'
-	source "@omzp/gh" when'[[ -n $ZLAST_COMMANDS[(r)g*] ]]'
+	source "@omzp/git" when'test -n ${ZLAST_COMMANDS[(r)g*]}' has'git'
+	source "@omzp/gh" when'test -n ${ZLAST_COMMANDS[(r)g*]}' has'gh'
 
 	# # ==> misc
-	source 'MohamedElashri/exa-zsh' when'idle' # ls
+	source 'MohamedElashri/exa-zsh' when'idle' has'exa' # ls
 
 	# # ==> config
 	source "@omzl/history"
 
-	# # ==> theme
+	# ==> theme
 	source "romkatv/powerlevel10k" pick"powerlevel10k.zsh-theme"
 }
 
@@ -48,10 +48,5 @@ zmodload zsh/zprof
 }
 
 source zutils.plugin.zsh
-
-echo "=====> zprof"
-print "[zshrc] zutils took ${(M)$(( SECONDS * 1000 ))#*.?} ms"
-
-echo "=====> zprof"
-zprof
-
+local endtime="${(M)$(( SECONDS * 1000 ))#*.?}"
+zprof; print "\n[zshrc] zutils took ${endtime} ms"
