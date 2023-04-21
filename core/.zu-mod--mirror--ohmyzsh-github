@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+[[ ! "${PLUGIN_ID}" == @omz*  ]] && return 0
+
+[[ ! -d "${PLUGIN_HOME:h}/ohmyzsh--ohmyzsh" ]] && \
+git clone --depth 1 "https://github.com/ohmyzsh/ohmyzsh.git" "${PLUGIN_HOME:h}/ohmyzsh--ohmyzsh"
+
+case ${PLUGIN_OWNER} in
+	(@omzp)
+		cp -r ${PLUGIN_HOME:h}/ohmyzsh--ohmyzsh/plugins/${PLUGIN_ID:t} "${PLUGIN_HOME}"
+	;;
+	(@omzl)
+		mkdir -p "${PLUGIN_HOME}" && cp "${PLUGIN_HOME:h}/ohmyzsh--ohmyzsh/lib/${PLUGIN_ID:t}.zsh" "${PLUGIN_HOME}/${PLUGIN_ID:t}.plugin.zsh"
+	;;
+esac

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+local files_to_compile=($(
+    {
+        grep -r -E '(mode: zsh)|(#!.+zsh)' -l ${PLUGIN_HOME};
+        echo ${PLUGIN_HOME}/*.zsh(N);
+    } \
+    | uniq
+))
+
+for to_compile in ${(@)files_to_compile}; do
+    zcompile ${to_compile}
+done

@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+export PLUGIN_ID=$1; shift
+export PLUGIN_OWNER=${PLUGIN_ID:h}
+export PLUGIN_NAME=${PLUGIN_ID:t}
+export PLUGIN_HOME=${ZUTILS[PLUGINS_PATH]}/${PLUGIN_OWNER}--${PLUGIN_NAME}
+
+# has zu mirrored plugin locally?
+if [[ ! -d "${PLUGIN_HOME}" ]]; then
+	echo -n "Adding ${fg_bold[blue]}${PLUGIN_ID}${reset_color}		"
+	for mirror_plugin_fn in ${(Mk)functions:#.zu-mod--mirror--*}; do; ${mirror_plugin_fn}; done &> /dev/null
+	.zu-mod--zcompile
+
+	echo "\rAdded ${fg_bold[blue]}${PLUGIN_ID}${reset_color} ${fg_bold[cyan]}✔${reset_color}		"
+fi
+
+local file=""
+local defer=""
+while [[ -n "$@" ]]; do
+    case $1 in
+		(whenidle*) defer="zsh-defer";;
+        (pick*) file=${1//pick};;
+    esac
+    shift
+done
+set -x
+
+$defer source \
+${file:+${PLUGIN_HOME}/${file}} \
+${PLUGIN_HOME}/*.plugin.zsh(N) \
+${ZUTILS[HOME_PATH]}/core/.zu-plugin-null
+
+set +x
+unset PLUGIN_ID PLUGIN_OWNER PLUGIN_NAME PLUGIN_HOME

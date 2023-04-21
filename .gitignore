@@ -1,5 +1,5 @@
 # generated files
-plugins/
+packages/
 .revolver/
 .zcompdump
 .zsh_history

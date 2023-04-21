@@ -1,2 +1,0 @@
-#!/usr/bin/env zsh
-test -d "${ZUTILS[PLUGINS_DIR]}/${1/\//--}"

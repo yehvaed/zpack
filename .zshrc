@@ -1,32 +1,33 @@
 .init() {
-	has 'fzf' source 'Aloxaf/fzf-tab' wait'idle'
-	has 'fzf' source 'joshskidmore/zsh-fzf-history-search' wait'idle'
+	# ==> completion helpers
+	source 'Aloxaf/fzf-tab' when'idle'
+	source 'joshskidmore/zsh-fzf-history-search' when'idle'
 
-	has 'fasd' source '@omzp/fasd' wait'idle'
-	has 'exa' source 'MohamedElashri/exa-zsh' wait'idle'
+	# ==> zle helpers
+	source 'hlissner/zsh-autopair' when'idle'
+	source 'z-shell/F-Sy-H' when'idle'
+	source 'olets/zsh-abbr' when'idle'
+	source '@omzp/fancy-ctrl-z' when'idle'
 
-	has 'terraform' source "@omzp/terraform" wait'idle'
-	has 'aws' source "@omzp/aws" wait'idle'
-	has 'ansible' source "@omzp/ansible" wait'idle'
-	has 'nomad' source "@omzp/nomad" wait'idle'
-	has 'nomad' source "@omzp/docker" wait'idle'
-	has 'packer' source 'wakeful/zsh-packer' wait'idle'
+	# ==> productivity
+	source '@omzp/fasd' when'idle'
+	source 'zpm-zsh/undollar' when'idle'
 
-	has 'npm' source '@omzp/npm' wait'idle'
-	has 'yarn' source '@omzp/yarn' wait'idle'
+	# ==> habits
+	source 'MichaelAquilina/zsh-you-should-use' when'idle'
+	source 'ahmubashshir/zinsults' when'idle'
 
-	has 'git' source "@omzp/git" wait'idle'
-	has 'gh' source "@omzp/gh" wait'idle'
+	# ==> tools dev
+	source "@omzp/git" when'idle'
+	source "@omzp/gh" when'idle'
 
-	source 'hlissner/zsh-autopair' wait'idle'
-	source 'z-shell/F-Sy-H' wait'idle'
-	source 'olets/zsh-abbr' wait'idle'
-	source 'MichaelAquilina/zsh-you-should-use' wait'idle'
-	source 'zpm-zsh/undollar' wait'idle'
-	source '@omzp/fancy-ctrl-z' wait'idle'
+	# ==> misc
+	source 'MohamedElashri/exa-zsh' when'idle' # ls
 
+	# ==> config
 	source "@omzl/history"
-	source 'ahmubashshir/zinsults'
+
+	# ==> theme
 	source "romkatv/powerlevel10k" pick"powerlevel10k.zsh-theme"
 }
 
@@ -38,7 +39,9 @@
 
 	# ==> MichaelAquilina/zsh-you-should-use
 	export YSU_MESSAGE_POSITION="after"
+
+	# ===> romkatv/powerlevel10k
+	export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 }
 
-POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
-source init.zsh
+source zutils.plugin.zsh

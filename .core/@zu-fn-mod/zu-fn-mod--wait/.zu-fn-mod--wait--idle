@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-[[ ! "$@" == "idle" ]] && return 0;
+[[ ! "$@" == "idle" ]] && return 1;
 
 .zu-source-when-idle() {
     for file in $@; do;

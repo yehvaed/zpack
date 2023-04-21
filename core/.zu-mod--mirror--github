@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+[[ ! "${PLUGIN_ID//[a-zA-Z0-9\-]}" == "/"  ]] && return 0
+git clone --depth 1 "https://github.com/${PLUGIN_ID}.git" "${PLUGIN_HOME}"

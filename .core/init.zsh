@@ -31,8 +31,8 @@ autoload compinit && compinit -u
 
 functions[.zpack_bootstrap]=$(
   echo ${functions[.init]} \
-	| sed 's/source/@source/g' \
-	| sed 's/has/@has/g'
+	| sed 's/source/@zu-source/g' \
+	| sed 's/has/@zu-has/g'
 )
 
 .init() {
@@ -41,8 +41,8 @@ functions[.zpack_bootstrap]=$(
 
 functions[.zpack_bootstrap_base]=$(
   echo ${functions[.init]} \
-	| sed 's/source/@source/g' \
-	| sed 's/has/@has/g'
+	| sed 's/source/@zu-source/g' \
+	| sed 's/has/@zu-has/g'
 )
 
 .zpack_bootstrap_base
