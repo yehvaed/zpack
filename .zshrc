@@ -1,33 +1,36 @@
+typeset -F4 SECONDS=0
+zmodload zsh/zprof
+
 .init() {
 	# ==> completion helpers
 	source 'Aloxaf/fzf-tab' when'idle'
 	source 'joshskidmore/zsh-fzf-history-search' when'idle'
 
-	# ==> zle helpers
+	# # ==> zle helpers
 	source 'hlissner/zsh-autopair' when'idle'
 	source 'z-shell/F-Sy-H' when'idle'
 	source 'olets/zsh-abbr' when'idle'
 	source '@omzp/fancy-ctrl-z' when'idle'
 
-	# ==> productivity
+	# # ==> productivity
 	source '@omzp/fasd' when'idle'
 	source 'zpm-zsh/undollar' when'idle'
 
-	# ==> habits
+	# # ==> habits
 	source 'MichaelAquilina/zsh-you-should-use' when'idle'
 	source 'ahmubashshir/zinsults' when'idle'
 
 	# ==> tools dev
-	source "@omzp/git" when'idle'
-	source "@omzp/gh" when'idle'
+	source "@omzp/git" when'[[ -n $ZLAST_COMMANDS[(r)g*] ]]'
+	source "@omzp/gh" when'[[ -n $ZLAST_COMMANDS[(r)g*] ]]'
 
-	# ==> misc
+	# # ==> misc
 	source 'MohamedElashri/exa-zsh' when'idle' # ls
 
-	# ==> config
+	# # ==> config
 	source "@omzl/history"
 
-	# ==> theme
+	# # ==> theme
 	source "romkatv/powerlevel10k" pick"powerlevel10k.zsh-theme"
 }
 
@@ -45,3 +48,10 @@
 }
 
 source zutils.plugin.zsh
+
+echo "=====> zprof"
+print "[zshrc] zutils took ${(M)$(( SECONDS * 1000 ))#*.?} ms"
+
+echo "=====> zprof"
+zprof
+

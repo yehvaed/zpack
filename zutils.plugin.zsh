@@ -21,10 +21,7 @@ autoload -Uz ${0:h}/core/*(.ND:t)
 
 autoload colors && colors
 autoload compinit && compinit -u
-
-() {
-	@zu-source "romkatv/zsh-defer"
-}
+autoload -Uz add-zle-hook-widget
 
 functions[.init]=${functions[.init]//source/@zu-source}
 .init && unset -f .init

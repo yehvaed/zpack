@@ -14,20 +14,52 @@ if [[ ! -d "${PLUGIN_HOME}" ]]; then
 fi
 
 local file=""
-local defer=""
+local when=""
+
 while [[ -n "$@" ]]; do
     case $1 in
-		(whenidle*) defer="zsh-defer";;
+		(when*) when=${1//when/};;
         (pick*) file=${1//pick};;
     esac
     shift
 done
-set -x
 
-$defer source \
-${file:+${PLUGIN_HOME}/${file}} \
-${PLUGIN_HOME}/*.plugin.zsh(N) \
-${ZUTILS[HOME_PATH]}/core/.zu-plugin-null
+local files=(
+	${file:+${PLUGIN_HOME}/${file}}
+	${PLUGIN_HOME}/*.plugin.zsh(N)
+	${ZUTILS[HOME_PATH]}/core/.zu-plugin-null
+)
 
-set +x
+local name=".zu-task-anon-${RANDOM//2/E}${RANDOM}${RANDOM/6//v}${RANDOM//0//OO}"
+
+case ${when} in
+	(\[\[*\]\])
+		eval "${name}() {
+			$when || return 0;
+			source ${files};
+			zsh_loaded_plugins+=(${PLUGIN_ID});
+			add-zle-hook-widget -d line-pre-redraw ${name};
+			unset -f ${name};
+		}"
+
+		add-zle-hook-widget line-pre-redraw ${name}
+	;;
+	(idle)
+		eval "${name}() {
+			source ${files};
+			zsh_loaded_plugins+=(${PLUGIN_ID});
+			add-zle-hook-widget -d line-init ${name};
+			unset -f ${name};
+		}"
+
+		add-zle-hook-widget line-init ${name}
+	;;
+	*)
+		source ${files}
+	;;
+esac
+
+# add-zle-hook-widget line-init "eccho test"
+
+# set +x
 unset PLUGIN_ID PLUGIN_OWNER PLUGIN_NAME PLUGIN_HOME
