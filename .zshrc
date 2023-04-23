@@ -3,32 +3,34 @@ zmodload zsh/zprof
 
 .init() {
 	# ==> completion helpers
-	source 'Aloxaf/fzf-tab' when'idle' has'fzf'
-	source 'joshskidmore/zsh-fzf-history-search' when'idle' has'fzf'
+	has 'fzf' && source 'Aloxaf/fzf-tab' defer'idle'
+	has 'fzf' && source 'joshskidmore/zsh-fzf-history-search' defer'idle'
 
 	# # ==> zle helpers
-	source 'hlissner/zsh-autopair' when'idle'
-	source 'z-shell/F-Sy-H' when'idle'
-	source 'olets/zsh-abbr' when'idle'
-	source '@omzp/fancy-ctrl-z' when'idle'
+	source 'hlissner/zsh-autopair' defer'idle'
+	source 'z-shell/F-Sy-H' defer'idle'
+	source 'olets/zsh-abbr' defer'idle'
+	source '@omzp/fancy-ctrl-z' defer'idle'
 
 	# # ==> productivity
-	source '@omzp/fasd' when'idle' has'fasd'
-	source 'zpm-zsh/undollar' when'idle'
+	source '@omzp/fasd' defer'idle' has'fasd'
+	source 'zpm-zsh/undollar' defer'idle'
 
 	# # ==> habits
-	source 'MichaelAquilina/zsh-you-should-use' when'idle'
-	source 'ahmubashshir/zinsults' when'idle'
+	source 'MichaelAquilina/zsh-you-should-use' defer'idle'
+	source 'ahmubashshir/zinsults' defer'idle'
 
 	# ==> tools dev
-	source "@omzp/git" when'test -n ${ZLAST_COMMANDS[(r)g*]}' has'git'
-	source "@omzp/gh" when'test -n ${ZLAST_COMMANDS[(r)g*]}' has'gh'
+	has 'git' && source "@omzp/git" defer'idle'
+	has 'gh' && source "@omzp/gh" defer'idle'
 
 	# # ==> misc
-	source 'MohamedElashri/exa-zsh' when'idle' has'exa' # ls
+	has 'exa' && source 'MohamedElashri/exa-zsh' defer'idle'  # ls
 
 	# # ==> config
 	source "@omzl/history"
+
+	source "jeffreytse/zsh-vi-mode"
 
 	# ==> theme
 	source "romkatv/powerlevel10k" pick"powerlevel10k.zsh-theme"
@@ -45,8 +47,11 @@ zmodload zsh/zprof
 
 	# ===> romkatv/powerlevel10k
 	export POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+
+	# ===> jeffreytse/zsh-vi-mode
+	export ZVM_INIT_MODE=sourcing
 }
 
 source zutils.plugin.zsh
-local endtime="${(M)$(( SECONDS * 1000 ))#*.?}"
-zprof; print "\n[zshrc] zutils took ${endtime} ms"
+# local endtime="${(M)$(( SECONDS * 1000 ))#*.?}"
+# zprof; print "\n[zshrc] zutils took ${endtime} ms"
