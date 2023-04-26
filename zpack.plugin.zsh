@@ -22,8 +22,13 @@ autoload -Uz ${0:h}/core/*(.ND:t)
 autoload colors && colors
 autoload compinit && compinit -u
 
-functions[.init]=${functions[.init]//source/@zu-source}
-functions[.init]=${functions[.init]//has/@zu-has}
+# functions[.init]=${functions[.init]//source/@zu-source}
+# functions[.init]=${functions[.init]//has/@zu-has}
+functions[.init]=$(
+    echo "${functions[.init]}" \
+    | perl -pe 's/source(?= +)/\@zu-source/' \
+    | perl -pe 's/has(?= +)/\@zu\-has/'
+)
 
 # deps
 @zu-source "romkatv/zsh-defer"
